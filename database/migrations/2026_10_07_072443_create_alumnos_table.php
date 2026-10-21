@@ -24,6 +24,7 @@ return new class extends Migration
             // nota acceso
             $table->decimal('notaacceso', 4, 2)->nullable();
             $table->timestamps();
+            $table->unique(['nombre', 'apellido']);
         });
     }
 
