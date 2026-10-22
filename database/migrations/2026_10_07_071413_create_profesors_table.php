@@ -13,7 +13,18 @@ return new class extends Migration
     {
         Schema::create('profesor', function (Blueprint $table) {
             $table->id();
+            // nombre
+            $table->string('nombre', 100);
+            // apellidos
+            $table->string('apellidos', 130);
+            // especialidad
+            $table->string('especialidad', 100);
+            // fecha de alta
+            $table->date('fecha_alta')->nullable();
+            // salario
+            $table->decimal('salario', 10, 2)->nullable();
             $table->timestamps();
+            $table->unique(['nombre', 'apellidos']);
         });
     }
 

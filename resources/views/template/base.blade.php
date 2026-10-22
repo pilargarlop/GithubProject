@@ -37,6 +37,7 @@
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{{ route('array') }}">Array</a></li>
 
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{{ route('alumno.index') }}">Alumno</a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{{ route('profesor.index') }}">Profesor</a></li>
                     </ul>
                 </div>
             </div>
@@ -44,15 +45,6 @@
         <!-- Masthead-->
         
         <header class="masthead bg-primary text-white text-center">
-            @error('error')
-            <div class="row">
-        <div class="col-md-6 mx-auto">
-            <div class="alert alert-danger" role="alert">
-                {{$message}}
-                 </div>
-                  </div>
-            </div>
-            @enderror
              @yield('before-content')
             @yield('content')
              @yield('after-content')
