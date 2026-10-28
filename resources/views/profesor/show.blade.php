@@ -1,36 +1,39 @@
 @extends('template.base')
 
+@section('body-class', 'profesor-show-page')
+
 @section('css')
-<link href="{{asset('assets/style/show.css')}}" rel="stylesheet"/>
+<link href="{{ asset('assets/style/show.css') }}" rel="stylesheet"/>
 @endsection
 
+
 @section('content')
-<div class="container my-5">
-    <div class="row g-4">
-
-        <div class="col-12 col-md-6">
-            <div class="card text-center">
-                <img src="{{ asset('assets/img/arthurMorgan.jpg/') }}" class="card-img-top" alt="Juan">
-                <div class="card-body">
-                    <h5 class="card-title">{{$profesor->nombre . ' ' . $profesor->apellido}}</h5>
-                </div>
-            </div>
+<main class="profesor-show">
+    <section class="profesor-show__card profesor-show__identity card">
+        <img
+            src="{{ asset('assets/img/avataaars.svg') }}"
+            class="profesor-show__avatar"
+            alt="Avatar de {{ $profesor->nombre }} {{ $profesor->apellido }}"
+        >
+        <div class="card-body">
+            <h1 class="profesor-show__name">{{ $profesor->nombre }} {{ $profesor->apellido }}</h1>
         </div>
-    </div>
-</div>
-<div class="container my-5">
-    <div class="row g-4">
+    </section>
 
-        <div class="col-12 col-md-6">
-            <div class="card text-center">
-                <div class="card-body">
-                    <h6 class="card-title">{{$profesor->especialidad}}</h6>
-                    <h6 class="card-title">{{$profesor->falta}}</h6>
-                    <h6 class="card-title">{{$profesor->salario}}</h6>
-                    <a href="{{route('profesor.index')}}"class="btn btn-secondary">BACK</a>
-                </div>
-            </div>
+    <section class="profesor-show__card profesor-show__details card">
+        <div class="card-body">
+            <p><strong>Especialidad:</strong> {{ $profesor->especialidad ?: 'No especificada' }}</p>
+            <p><strong>Fecha de alta:</strong> {{ $profesor->created_at?->format('d/m/Y') ?? 'No disponible' }}</p>
+            <p>
+                <strong>Salario:</strong>
+                @if ($profesor->salario !== null)
+                    {{ number_format((float) $profesor->salario, 2, ',', '.') }} €
+                @else
+                    No especificado
+                @endif
+            </p>
+            <a href="{{ route('profesor.index') }}" class="btn btn-secondary">Volver al listado</a>
         </div>
-    </div>
-</div>
+    </section>
+</main>
 @endsection

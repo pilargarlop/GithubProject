@@ -1,12 +1,117 @@
 .card-img-top {
-        height: 250px;
-        width: 100%;
-        object-fit: contain;
-        /*object-fit: cover;*/
+    height: 250px;
+    width: 100%;
+    object-fit: contain;
+}
+
+.card {
+    background-color: #dbeafe;
+}
+
+.card-title {
+    color: #1e3a8a;
+}
+
+body.profesor-show-page {
+    background-color: #1abc9c;
+}
+
+body.profesor-show-page #mainNav,
+body.profesor-show-page footer,
+body.profesor-show-page .copyright {
+    display: none;
+}
+
+body.profesor-show-page header.masthead {
+    display: flex;
+    min-height: 100vh;
+    align-items: flex-start;
+    padding: 0;
+}
+
+.profesor-show {
+    width: min(767px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: 49px 0 36px;
+    text-align: center;
+}
+
+.profesor-show__card {
+    width: min(100%, 580px);
+    margin: 0 0 30px;
+    border: 0;
+    border-radius: 10px;
+    background-color: #dbeafe;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+    color: #1e3a8a;
+}
+
+.profesor-show__identity {
+    min-height: 310px;
+    padding-top: 28px;
+}
+
+.profesor-show__avatar {
+    display: block;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+    object-fit: contain;
+}
+
+.profesor-show__identity .card-body {
+    padding: 16px 24px 24px;
+}
+
+.profesor-show__name {
+    margin: 0;
+    color: #1e3a8a;
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.profesor-show__details {
+    min-height: 239px;
+    margin-bottom: 0;
+}
+
+.profesor-show__details .card-body {
+    padding: 27px 24px 30px;
+}
+
+.profesor-show__details p {
+    margin: 0 0 10px;
+    font-size: 20px;
+    line-height: 1.5;
+}
+
+.profesor-show__details .btn {
+    margin-top: 10px;
+    padding: 0.65rem 1rem;
+    border-radius: 0.65rem;
+    font-size: 20px;
+}
+
+@media (max-width: 575.98px) {
+    .profesor-show {
+        padding-top: 24px;
     }
-    .card {
-        background-color: #dbeafe;
+
+    .profesor-show__identity {
+        min-height: 0;
     }
-    .card-title {
-        color: #1e3a8a;
+
+    .profesor-show__details {
+        min-height: 0;
     }
+
+    .profesor-show__details .card-body {
+        padding-right: 16px;
+        padding-left: 16px;
+    }
+
+    .profesor-show__details p,
+    .profesor-show__details .btn {
+        font-size: 17px;
+    }
+}

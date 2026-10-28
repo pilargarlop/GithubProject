@@ -17,7 +17,7 @@
         <link href="{{ asset('assets/style/styles.css') }}" rel="stylesheet" />
         @yield('css')
     </head>
-    <body id="page-top">
+    <body id="page-top" class="@yield('body-class')">
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
             <div class="container">
