@@ -33,7 +33,7 @@ class ProfesorController extends Controller
                 'error' => 'No se ha podido borrar el profesor.',
             ]);
         }
-        return redirect()->route('profesor.index')->with(['success' => 'Se ha borrado al profesor.']);
+        return redirect()->route('profesor.index')->with('success', 'Profesor eliminado correctamente.');
     }
 
     public function edit(Profesor $profesor): View
@@ -51,6 +51,7 @@ class ProfesorController extends Controller
             'especialidad.min' => 'La especialidad debe tener al menos 2 caracteres.',
             'falta.in' => 'Selecciona un valor válido para la falta.',
             'salario.numeric' => 'El salario debe ser un número.',
+            'salario.gte' => 'El salario no puede ser negativo.',
             'salario.lte' => 'El salario supera el límite permitido.',
             'salario.decimal' => 'El salario debe tener como máximo 2 decimales.',
         ];
@@ -58,7 +59,7 @@ class ProfesorController extends Controller
 
     public function index(): View
     {
-        return view('profesor.index', ['profesor' => Profesor::all()]);
+        return view('profesor.index', ['profesores' => Profesor::all()]);
     }
 
     public function show(Profesor $profesor): View
@@ -76,7 +77,7 @@ class ProfesorController extends Controller
         }
 
         try {
-            Profesor::create($request->all());
+            Profesor::create($validator->validated());
         } catch (UniqueConstraintViolationException $e) {
             return back()->withInput()->withErrors([
                 'error' => 'Nombre y apellidos ya existentes.',
@@ -87,7 +88,7 @@ class ProfesorController extends Controller
             ]);
         }
         
-        return redirect()->route('profesor.index')->with(['success' => 'Se ha creado el profesor correctamente.']);
+        return redirect()->route('profesor.index')->with('success', 'Profesor creado correctamente.');
     }
 
     public function update(Request $request, Profesor $profesor): RedirectResponse
@@ -99,7 +100,7 @@ class ProfesorController extends Controller
         }
 
         try {
-            $profesor->update($request->all());
+            $profesor->update($validator->validated());
         } catch (UniqueConstraintViolationException $e) {
             return back()->withInput()->withErrors([
                 'error' => 'Nombre y apellidos ya existentes.',

@@ -16,7 +16,6 @@ class ShowProfesorTest extends TestCase
             'nombre' => 'Antonio',
             'apellido' => 'Lobato',
             'especialidad' => 'Ingenieria',
-            'falta' => 'no',
             'salario' => '2980.00',
         ]);
         $profesor->created_at = '2026-10-22 12:00:00';

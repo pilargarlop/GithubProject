@@ -23,30 +23,33 @@
         <th>Especialidad</th>
         <th>Falta</th>
         <th>Salario</th>
+        <th>Fecha de alta</th>
         <th colspan="3">Acciones</th> <!-- Para alinear las 3 columnas de botones -->
     </tr>
 </thead>
                 <tbody>
-                    @foreach($profesor as $profeso)
+                    @forelse($profesores as $profesor)
                         <tr>
-                            <td>{{ $profeso->id }}</td>
-                            <td>{{ $profeso->nombre }}</td>
-                            <td>{{ $profeso->apellido }}</td>
-                            <td>{{ $profeso->especialidad }}</td>
-                            <td>{{ $profeso->falta }}</td>
-                            <td>{{ $profeso->salario }}</td>
+                            <td>{{ $profesor->id }}</td>
+                            <td>{{ $profesor->nombre }}</td>
+                            <td>{{ $profesor->apellido }}</td>
+                            <td>{{ $profesor->especialidad ?? '—' }}</td>
+                            <td>{{ $profesor->falta ?? '—' }}</td>
+                            <td>{{ $profesor->salario !== null ? number_format((float) $profesor->salario, 2, ',', '.') . ' €' : '—' }}</td>
+                            <td>{{ $profesor->created_at?->format('d/m/Y') ?? '—' }}</td>
 
-                            <td> <a href="{{route('profesor.show', $profeso->id)}}"class="btn btn-secondary">View</a></td>
-                             <td> <a href="{{route('profesor.edit', $profeso->id )}}"class="btn btn-secondary">Edit</a></td>
-                              <!--<td> <a href="{{route('index')}}"class="btn btn-secondary">Delete</a></td>-->
-                              <td><form class="confirm-dialog" data-message="{{$profeso->apellido .' , ' . $profeso->nombre}}" action="{{route('profesor.destroy', $profeso)}}"method="post">
+                            <td> <a href="{{ route('profesor.show', $profesor) }}" class="btn btn-secondary">Ver</a></td>
+                            <td> <a href="{{ route('profesor.edit', $profesor) }}" class="btn btn-secondary">Editar</a></td>
+                            <td><form class="confirm-dialog" data-message="{{ $profesor->apellido . ', ' . $profesor->nombre }}" action="{{ route('profesor.destroy', $profesor) }}" method="post">
                                 @csrf
                                 @method('delete')
-                                <input type="submit" value="Delete" class="btn btn-secondary"></input>
+                                <input type="submit" value="Eliminar" class="btn btn-secondary">
                                 </form>
-                                </td>
+                            </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr><td colspan="10">No hay profesores registrados.</td></tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
@@ -59,7 +62,7 @@
     document.querySelectorAll('form.confirm-dialog').forEach(
         form => {
             form.addEventListener('submit', e => {
-                const message = '¿Seguro que quieres borrar al alumno '+ form.dataset.message +'?' ;
+                const message = '¿Seguro que quieres borrar al profesor ' + form.dataset.message + '?';
                 if(!confirm(message)){
                     e.preventDefault();
                 }

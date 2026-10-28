@@ -39,6 +39,7 @@
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{{ route('alumno.index') }}">Alumno</a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{{ route('profesor.index') }}">Profesor</a></li>
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{{ route('modulo.index') }}">Módulo</a></li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{{ route('matricula.index') }}">Matrícula</a></li>
                     </ul>
                 </div>
             </div>
@@ -46,6 +47,13 @@
         <!-- Masthead-->
         
         <header class="masthead bg-primary text-white text-center">
+            @if (session('success'))
+                <div class="container">
+                    <div class="alert alert-success" role="alert">
+                        {{ session('success') }}
+                    </div>
+                </div>
+            @endif
              @yield('before-content')
             @yield('content')
              @yield('after-content')

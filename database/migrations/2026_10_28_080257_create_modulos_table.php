@@ -18,7 +18,7 @@ return new class extends Migration
            $table->foreignId('alumno_id');
            $table->foreignId('modulo_id');
            $table->decimal('nota', 4, 2)->nullable();
-           $table->unsignedSmallInteger('curso');
+           $table->string('curso', 30);
            $table->timestamps();
            // Creamos la clave primaria compuesta
            $table->unique(['alumno_id', 'modulo_id', 'curso']);
