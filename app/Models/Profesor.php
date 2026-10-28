@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Profesor extends Model
 {
+        //nombre de la tabla
     protected $table = 'profesor';
-
-    protected $fillable = ['nombre', 'apellido', 'fnac', 'genero', 'especialidad'];
-}
+    
+    //campos que hay que rellenar antes de guardar un objeto en la base de datos
+    protected $fillable = ['nombre', 'apellido', 'especialidad', 'falta', 'salario'];
+}  

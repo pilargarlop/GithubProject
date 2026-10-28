@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AlumnoController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\ModuloController;
+use App\Http\Controllers\MatriculaController;
 use App\Http\Controllers\ProfesorController;
 use Illuminate\Support\Facades\Route;
 
@@ -9,7 +11,7 @@ Route::get('/', [MainController::class, 'index'])->name('index');
 Route::get('about', [MainController::class, 'about'])->name('about');
 Route::get('array', [MainController::class, 'array'])->name('array');
 Route::get('a/r/r/a/y', [MainController::class, 'array'])->name('array');
-//Route::get('aboutRuta', [MainController::class, 'aboutMetodo'])->name('aboutNombre');
+Route::get('aboutRuta', [MainController::class, 'aboutMetodo'])->name('aboutNombre');
 Route::get('portfolio', [MainController::class, 'portfolio'])->name('portfolio');
 
 //las 7 rutas
@@ -28,3 +30,9 @@ Route::get('profesor', [ProfesorController::class, 'index'])->name('profesor.ind
 Route::put('profesor/{profesor}', [ProfesorController::class, 'update'])->name('profesor.update');
 Route::get('profesor/{profesor}', [ProfesorController::class, 'show'])->name('profesor.show');
 Route::delete('profesor/{profesor}', [ProfesorController::class, 'destroy'])->name('profesor.destroy');
+
+Route::resource('modulo', ModuloController::class);
+Route::resource('alumno', AlumnoController::class);
+Route::resource('profesor', ProfesorController::class);
+Route::resource('modulo', ModuloController::class);
+Route::resource('matricula', MatriculaController::class);

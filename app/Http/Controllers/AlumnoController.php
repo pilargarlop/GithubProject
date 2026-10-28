@@ -1,11 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Database\UniqueConstraintViolationException;
 use App\Models\Alumno;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
 class AlumnoController extends Controller
@@ -18,13 +18,26 @@ class AlumnoController extends Controller
 
     public function destroy(Alumno $alumno): RedirectResponse
     {
-        dd(['destroy', $alumno]);
+        $alumno->delete();
+
+        return redirect()->route('alumno.index');
     }
 
     public function edit(Alumno $alumno): View
     {
         //
         return view('alumno.edit', ['alumno'=>$alumno]);
+    }
+
+    private static function getRules(): array
+    {
+        return [
+            'nombre' => 'required|string|max:100|min:2',
+            'apellido' => 'required|string|max:130|min:3',
+            'fnac' => 'nullable|date|before_or_equal:today',
+            'genero' => 'nullable|in:hombre,femenino,otro',
+            'notaacceso' => 'nullable|numeric|gte:0|lte:10|decimal:0,2',
+        ];
     }
 
     public function index(): View
@@ -38,76 +51,53 @@ class AlumnoController extends Controller
         return view('alumno.show', ['alumno'=>$alumno]);
     }
 
-    function store(Request $request): RedirectResponse{
-        //1º Validar
-        $rules =  [
-            'nombre' => 'required|string|max:100|min:2',
-            'apellido' => 'required|string|max:130|min:100',
-            'fnac' => 'nullable|date|before_or_equal:today',
-            'genero' => 'nullable|in:masculino,femenino,otro',
-            'notaacceso'=> 'nullable|numeric|gte:0|lte:10|decimal:2',
-        ];
+    public function store(Request $request): RedirectResponse
+    {
+        $rules = self::getRules();
         $messages = [
-            'nombre.required' => '',
-            'nombre.string' => '',
-            'nombre.max' => '',
-            'nombre.min' => '',
-            'apellido.required' => '',
-            'apellido.string' => '',
-            'apellido.max' => '',
-            'apellido.min' => '',
-            'fnac.date' => '',
-            'fnac.before_or_equal' => '',
-            'genero.in' => '',
-            'notaacceso.numeric' => '',
-            'notaacceso.gte' => '',
-            'notaacceso.lte' => '',
-            'notaacceso.decimal' => '',
-
-
+            'nombre.required' => 'El nombre es obligatorio.',
+            'nombre.string' => 'El nombre debe ser una cadena de texto.',
+            'nombre.max' => 'El nombre no puede tener más de 100 caracteres.',
+            'nombre.min' => 'El nombre debe tener al menos 2 caracteres.',
+            'apellido.required' => 'Los apellidos son obligatorios.',
+            'apellido.string' => 'Los apellidos deben ser una cadena de texto.',
+            'apellido.max' => 'Los apellidos no pueden tener más de 130 caracteres.',
+            'apellido.min' => 'Los apellidos deben tener al menos 3 caracteres.',
+            'fnac.date' => 'La fecha de nacimiento debe ser una fecha válida.',
+            'fnac.before_or_equal' => 'La fecha de nacimiento no puede ser posterior a hoy.',
+            'genero.in' => 'Selecciona un género válido.',
+            'notaacceso.numeric' => 'La nota de acceso debe ser un número.',
+            'notaacceso.gte' => 'La nota de acceso debe ser como mínimo 0.',
+            'notaacceso.lte' => 'La nota de acceso no puede ser mayor que 10.',
+            'notaacceso.decimal' => 'La nota de acceso debe tener como máximo 2 decimales.',
         ];
-        $validator = Validator::make($request->all(), $rules, $messages);
 
-        if($validator->fails()){
-             return back()->withInput()->withErrors($validator);
-        }
+        $validatedData = $request->validate($rules, $messages);
+        $alumno = new Alumno($validatedData);
 
-        $alumno = new Alumno($request->all());
-        try{
-        $alumno->save();
-        } catch(UniqueConstraintViolationException $e) {
+        try {
+            $alumno->save();
+        } catch (UniqueConstraintViolationException $e) {
             return back()->withInput()->withErrors([
-                'error' => 'Nombre y apellidos ya existentes.',
-                //'nombre' => 'Este campo forma parte de la clave unica',
-                //'apellido' => 'Este campo forma parte de la clave unica'
+                'claveunica' => 'Ya existe un alumno con ese nombre y apellido.',
             ]);
-        } catch(\Exception $e){
-            echo 'global';
-            dd($e);
         }
-        
-        return redirect()->route('alumno.index');
-    }
 
-    /*
-    function store(Request $request) RedirectResponse{
-        //dd($request->all());
-        //protected $fillable = ['nombre', 'apellidos', 'fnac', 'genero', 'nacceso'];
-        $alumno = new Alumno($request->all());
-        /*$alumno->nombre = $request->nombre;
-        $alumno->apellidos = $request->apellidos;
-        $alumno->genero = $request->genero;
-        $alumno->fnac = $request->fnac;
-        $alumno->nacceso = $request->nacceso;
-        $alumno->save();
-        //dd($alumno);
-        echo 'parece que todo ha ido bien.';
+        return redirect()->route('alumno.index')->with('success', 'Alumno creado correctamente.');
     }
-    */
 
     public function update(Request $request, Alumno $alumno): RedirectResponse
     {
-        $alumno -> update($request->all());
-        return redirect()->route('alumno.index');
+        $validatedData = $request->validate(self::getRules());
+
+        try {
+            $alumno->update($validatedData);
+        } catch (UniqueConstraintViolationException $e) {
+            return back()->withInput()->withErrors([
+                'claveunica' => 'Ya existe un alumno con ese nombre y apellido.',
+            ]);
+        }
+
+        return redirect()->route('alumno.index')->with('success', 'Alumno actualizado correctamente.');
     }
 }

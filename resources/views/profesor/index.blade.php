@@ -4,50 +4,49 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6 mx-auto">
-            <a class="btn btn-secondary" href="{{ route('profesor.create') }}">Crear profesor</a>
-        </div>
-    </div>
+<a class="btn btn-secondary" href="{{ route('profesor.create') }}">Crear Profesor</a>
+</div>
+</div>
 </div>
 @endsection
 
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-10 mx-auto">
+        <div class="col-md-6 mx-auto">
             <table class="table table-hover">
                 <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Apellidos</th>
-                        <th>Fecha de nacimiento</th>
-                        <th>Género</th>
-                        <th>Especialidad</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
+    <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Especialidad</th>
+        <th>Falta</th>
+        <th>Salario</th>
+        <th colspan="3">Acciones</th> <!-- Para alinear las 3 columnas de botones -->
+    </tr>
+</thead>
                 <tbody>
-                    @forelse($profesores as $profesor)
+                    @foreach($profesor as $profeso)
                         <tr>
-                            <td>{{ $profesor->id }}</td>
-                            <td>{{ $profesor->nombre }}</td>
-                            <td>{{ $profesor->apellido }}</td>
-                            <td>{{ $profesor->fnac ? \Carbon\Carbon::parse($profesor->fnac)->locale('es')->translatedFormat('d/m/Y') : '—' }}</td>
-                            <td>{{ $profesor->genero ?? '—' }}</td>
-                            <td>{{ $profesor->especialidad }}</td>
-                            <td class="d-flex gap-2">
-                                <a href="{{ route('profesor.show', $profesor) }}" class="btn btn-secondary">Ver</a>
-                                <a href="{{ route('profesor.edit', $profesor) }}" class="btn btn-secondary">Editar</a>
-                                <form class="confirm-dialog" data-message="{{ $profesor->apellido . ', ' . $profesor->nombre }}" action="{{ route('profesor.destroy', $profesor) }}" method="post">
-                                    @csrf
-                                    @method('delete')
-                                    <button type="submit" class="btn btn-secondary">Eliminar</button>
+                            <td>{{ $profeso->id }}</td>
+                            <td>{{ $profeso->nombre }}</td>
+                            <td>{{ $profeso->apellido }}</td>
+                            <td>{{ $profeso->especialidad }}</td>
+                            <td>{{ $profeso->falta }}</td>
+                            <td>{{ $profeso->salario }}</td>
+
+                            <td> <a href="{{route('profesor.show', $profeso->id)}}"class="btn btn-secondary">View</a></td>
+                             <td> <a href="{{route('profesor.edit', $profeso->id )}}"class="btn btn-secondary">Edit</a></td>
+                              <!--<td> <a href="{{route('index')}}"class="btn btn-secondary">Delete</a></td>-->
+                              <td><form class="confirm-dialog" data-message="{{$profeso->apellido .' , ' . $profeso->nombre}}" action="{{route('profesor.destroy', $profeso)}}"method="post">
+                                @csrf
+                                @method('delete')
+                                <input type="submit" value="Delete" class="btn btn-secondary"></input>
                                 </form>
-                            </td>
+                                </td>
                         </tr>
-                    @empty
-                        <tr><td colspan="7">No hay profesores registrados.</td></tr>
-                    @endforelse
+                    @endforeach
                 </tbody>
             </table>
         </div>
@@ -57,12 +56,15 @@
 
 @section('script')
 <script>
-    document.querySelectorAll('form.confirm-dialog').forEach(form => {
-        form.addEventListener('submit', event => {
-            if (!confirm(`¿Seguro que quieres borrar al profesor ${form.dataset.message}?`)) {
-                event.preventDefault();
-            }
-        });
-    });
-</script>
+    document.querySelectorAll('form.confirm-dialog').forEach(
+        form => {
+            form.addEventListener('submit', e => {
+                const message = '¿Seguro que quieres borrar al alumno '+ form.dataset.message +'?' ;
+                if(!confirm(message)){
+                    e.preventDefault();
+                }
+            });
+        }
+    );
+    </script>
 @endsection

@@ -15,16 +15,16 @@ return new class extends Migration
             $table->id();
             // nombre
             $table->string('nombre', 100);
-            // apellidos
-            $table->string('apellidos', 130);
-            // especialidad
-            $table->string('especialidad', 100);
-            // fecha de alta
-            $table->date('fecha_alta')->nullable();
-            // salario
+            // apellido
+            $table->string('apellido', 130);
+            // fecha nacimiento
+            $table->string('especialidad')->nullable();
+            // genero
+            $table->enum('falta', ['si', 'no'])->nullable();
+            // nota acceso
             $table->decimal('salario', 10, 2)->nullable();
             $table->timestamps();
-            $table->unique(['nombre', 'apellidos']);
+            $table->unique(['nombre', 'apellido']);
         });
     }
 

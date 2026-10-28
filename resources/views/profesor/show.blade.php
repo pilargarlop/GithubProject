@@ -1,22 +1,33 @@
 @extends('template.base')
 
+@section('css')
+<link href="{{asset('assets/style/show.css')}}" rel="stylesheet"/>
+@endsection
+
 @section('content')
 <div class="container my-5">
-    <div class="row">
-        <div class="col-12 col-md-8 mx-auto">
-            <div class="card">
+    <div class="row g-4">
+
+        <div class="col-12 col-md-6">
+            <div class="card text-center">
+                <img src="{{ asset('assets/img/arthurMorgan.jpg/') }}" class="card-img-top" alt="Juan">
                 <div class="card-body">
-                    <h2 class="card-title">{{ $profesor->nombre }} {{ $profesor->apellido }}</h2>
-                    <dl class="row mt-4">
-                        <dt class="col-sm-4">Fecha de nacimiento</dt>
-                        <dd class="col-sm-8">{{ $profesor->fnac ? \Carbon\Carbon::parse($profesor->fnac)->locale('es')->translatedFormat('d/m/Y') : '—' }}</dd>
-                        <dt class="col-sm-4">Género</dt>
-                        <dd class="col-sm-8">{{ $profesor->genero ?? '—' }}</dd>
-                        <dt class="col-sm-4">Especialidad</dt>
-                        <dd class="col-sm-8">{{ $profesor->especialidad }}</dd>
-                    </dl>
-                    <a href="{{ route('profesor.index') }}" class="btn btn-secondary">Volver</a>
-                    <a href="{{ route('profesor.edit', $profesor) }}" class="btn btn-secondary">Editar</a>
+                    <h5 class="card-title">{{$profesor->nombre . ' ' . $profesor->apellido}}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container my-5">
+    <div class="row g-4">
+
+        <div class="col-12 col-md-6">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h6 class="card-title">{{$profesor->especialidad}}</h6>
+                    <h6 class="card-title">{{$profesor->falta}}</h6>
+                    <h6 class="card-title">{{$profesor->salario}}</h6>
+                    <a href="{{route('profesor.index')}}"class="btn btn-secondary">BACK</a>
                 </div>
             </div>
         </div>
